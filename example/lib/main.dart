@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:smooth_video_progress/smooth_video_progress.dart';
 import 'package:video_player/video_player.dart';
+import 'package:appinio_video_player/appinio_video_player.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,12 +34,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late final VideoPlayerController _controller;
-  Size _videoSize = Size(1, 1);
+  late final CachedVideoPlayerController _controller;
+  // Size _videoSize = Size(1, 1);
 
   @override
   void initState() {
-    _controller = VideoPlayerController.network(
+    _controller = CachedVideoPlayerController.network(
       "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4",
       videoPlayerOptions: VideoPlayerOptions(
         mixWithOthers: true,
@@ -52,12 +52,12 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> _initVideoPlayerController(
-      VideoPlayerController controller) async {
+      CachedVideoPlayerController controller) async {
     await _controller.initialize();
     await _controller.play();
-    setState(() {
-      _videoSize = _controller.value.size;
-    });
+    // setState(() {
+    //   _videoSize = _controller.value.size;
+    // });
   }
 
   @override
@@ -74,60 +74,60 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Center(
-                child: AspectRatio(
-                  aspectRatio: _videoSize.aspectRatio,
-                  child: VideoPlayer(
-                    _controller,
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  Text(
-                    "Without SmoothVideoProgress:",
-                    style: Theme.of(context).textTheme.labelLarge,
-                  ),
-                  ValueListenableBuilder<VideoPlayerValue>(
-                    valueListenable: _controller,
-                    builder: (context, value, _) => _VideoProgressSlider(
-                      position: value.position,
-                      duration: value.duration,
-                      controller: _controller,
-                      swatch: Colors.red,
-                    ),
-                  ),
-                  const Divider(
-                    height: 16,
-                  ),
-                  Text(
-                    "With SmoothVideoProgress:",
-                    style: Theme.of(context).textTheme.labelLarge,
-                  ),
-                  SmoothVideoProgress(
-                    controller: _controller,
-                    builder: (context, position, duration, _) =>
-                        _VideoProgressSlider(
-                      position: position,
-                      duration: duration,
-                      controller: _controller,
-                      swatch: Colors.greenAccent,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+      // body: SafeArea(
+      //   child: Column(
+      //     crossAxisAlignment: CrossAxisAlignment.start,
+      //     children: [
+      //       Expanded(
+      //         child: Center(
+      //           child: AspectRatio(
+      //             aspectRatio: _videoSize.aspectRatio,
+      //             child: VideoPlayer(
+      //               _controller,
+      //             ),
+      //           ),
+      //         ),
+      //       ),
+      //       Padding(
+      //         padding: const EdgeInsets.all(16),
+      //         child: Column(
+      //           children: [
+      //             Text(
+      //               "Without SmoothVideoProgress:",
+      //               style: Theme.of(context).textTheme.labelLarge,
+      //             ),
+      //             ValueListenableBuilder<VideoPlayerValue>(
+      //               valueListenable: _controller,
+      //               builder: (context, value, _) => _VideoProgressSlider(
+      //                 position: value.position,
+      //                 duration: value.duration,
+      //                 controller: _controller,
+      //                 swatch: Colors.red,
+      //               ),
+      //             ),
+      //             const Divider(
+      //               height: 16,
+      //             ),
+      //             Text(
+      //               "With SmoothVideoProgress:",
+      //               style: Theme.of(context).textTheme.labelLarge,
+      //             ),
+      //             SmoothVideoProgress(
+      //               controller: _controller,
+      //               builder: (context, position, duration, _) =>
+      //                   _VideoProgressSlider(
+      //                 position: position,
+      //                 duration: duration,
+      //                 controller: _controller,
+      //                 swatch: Colors.greenAccent,
+      //               ),
+      //             ),
+      //           ],
+      //         ),
+      //       ),
+      //     ],
+      //   ),
+      // ),
     );
   }
 
